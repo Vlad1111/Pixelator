@@ -22,24 +22,27 @@ A small program that automatically convert a high definition image into a pixela
 
 # Some resoults
 
-![Original](./images/big0.png)
+those are images fresh out of the app
 
+![Original](./images/big0.png)
+Original (be gentle, it's an extreamly old drawing)
 
 ![200x120](./images/big2.png)
-
+200x120
 
 ![100x60](./images/big1.png)
-
+100x60
 
 ![Original](./images/icon0.jpg)
-
+Original
 
 ![100x100](./images/icon2.png)
-
+100x100
 
 ![100x100 pallete swap](./images/icon1.png)
-
+100x100 pallete swap
 
 ![50x50](./images/icon3.png)
+50x50
 
 Have fun!
