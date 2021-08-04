@@ -8,3 +8,13 @@ D:\hidden_folder\programe C#\Pixelations\Pixelations\obj\Debug\Pixelations.cspro
 D:\hidden_folder\programe C#\Pixelations\Pixelations\obj\Debug\Pixelations.csproj.CoreCompileInputs.cache
 D:\hidden_folder\programe C#\Pixelations\Pixelations\obj\Debug\Pixelations.exe
 D:\hidden_folder\programe C#\Pixelations\Pixelations\obj\Debug\Pixelations.pdb
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\bin\Debug\Pixelations.exe.config
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\bin\Debug\Pixelations.exe
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\bin\Debug\Pixelations.pdb
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.csprojAssemblyReference.cache
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.Form1.resources
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.Properties.Resources.resources
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.csproj.GenerateResource.cache
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.csproj.CoreCompileInputs.cache
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.exe
+D:\hidden_folder\programe C#\Pixelations\Pixelator\Pixelations\obj\Debug\Pixelations.pdb
