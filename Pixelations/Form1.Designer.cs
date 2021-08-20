@@ -49,6 +49,8 @@ namespace Pixelations
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -174,7 +176,7 @@ namespace Pixelations
             "nearest naighbour",
             "low",
             "median"});
-            this.comboBox1.Location = new System.Drawing.Point(483, 463);
+            this.comboBox1.Location = new System.Drawing.Point(483, 420);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(160, 21);
             this.comboBox1.TabIndex = 9;
@@ -189,7 +191,7 @@ namespace Pixelations
             "luminsity",
             "dinamic",
             "Lab"});
-            this.comboBox2.Location = new System.Drawing.Point(669, 463);
+            this.comboBox2.Location = new System.Drawing.Point(669, 420);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(160, 21);
             this.comboBox2.TabIndex = 10;
@@ -204,7 +206,7 @@ namespace Pixelations
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(482, 447);
+            this.label1.Location = new System.Drawing.Point(482, 404);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 11;
@@ -214,7 +216,7 @@ namespace Pixelations
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(666, 447);
+            this.label2.Location = new System.Drawing.Point(666, 404);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 12;
@@ -223,7 +225,7 @@ namespace Pixelations
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(482, 399);
+            this.button3.Location = new System.Drawing.Point(482, 356);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(135, 45);
             this.button3.TabIndex = 13;
@@ -234,7 +236,7 @@ namespace Pixelations
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(694, 399);
+            this.button4.Location = new System.Drawing.Point(694, 356);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(135, 45);
             this.button4.TabIndex = 14;
@@ -261,7 +263,7 @@ namespace Pixelations
             // button6
             // 
             this.button6.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button6.Location = new System.Drawing.Point(623, 399);
+            this.button6.Location = new System.Drawing.Point(623, 356);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(65, 45);
             this.button6.TabIndex = 16;
@@ -269,11 +271,37 @@ namespace Pixelations
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(482, 470);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(92, 17);
+            this.checkBox2.TabIndex = 17;
+            this.checkBox2.Text = "Make countur";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(482, 447);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(88, 17);
+            this.checkBox3.TabIndex = 18;
+            this.checkBox3.Text = "Not pixelated";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1311, 730);
+            this.Controls.Add(this.checkBox3);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -324,6 +352,8 @@ namespace Pixelations
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 

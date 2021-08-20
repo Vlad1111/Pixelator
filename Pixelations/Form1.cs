@@ -131,26 +131,26 @@ namespace Pixelations
                 }
         }
 
-        public void threadPutPyxelated(int index, int nrThreads, byte[] buffer, int width, int height, int depth, ColorKernels[] colors, int maxWidth, int maxHeight)
+        public void threadPutPyxelated(int index, int nrThreads, byte[] buffer, int width, int height, int depth, ColorKernels[] colors, int maxWidth, int maxHeight, bool notPixelated = false)
         {
             int slice = width / nrThreads;
             int start = index * slice;
             int end = start + slice;
             if (index == nrThreads - 1)
                 end = width;
-            Console.WriteLine("Coords: " + start + " " + end);
             for(int i=start;i<end;i++)
                 for(int j=0;j<height;j++)
                 {
-                    int x = i * 10;
-                    int y = j * 10;
-                    if (x >= maxWidth)
-                        x = maxWidth - 1;
-                    if (y >= maxHeight)
-                        y = maxHeight - 1;
-                    //smal.SetPixel(i, j, );
-                    //Color col = getColor(this.colors, x, y, maxWidth, maxHeight, this.depth);
+                    //int x = i * 10;
+                    //int y = j * 10;
+                    //if (x >= maxWidth)
+                    //    x = maxWidth - 1;
+                    //if (y >= maxHeight)
+                    //    y = maxHeight - 1;
+                    ///smal.SetPixel(i, j, );
+                    ///Color col = getColor(this.colors, x, y, maxWidth, maxHeight, this.depth);
                     Color col = getColor(buffer, i, j, width, height, depth);
+
 
                     int minDist1, minDist2, ind1, ind2;
                     minDist1 = minDist2 = int.MaxValue;
@@ -180,7 +180,7 @@ namespace Pixelations
                     //    continue;
                     //}
 
-                    if(ind2 < 0)
+                    if(ind2 < 0 || notPixelated)
                     {
                         setColor(buffer, i, j, width, height, depth, colors[ind1].color);
                     }
@@ -217,6 +217,88 @@ namespace Pixelations
                         else
                             setColor(buffer, i, j, width, height, depth, col2);
                     }
+                }
+        }
+        public void threadMakeCountour(int index, int nrThreads, byte[] buffer, int width, int height, int depth, byte[] output)
+        {
+            int slice = width / nrThreads;
+            int start = index * slice;
+            int end = start + slice;
+            if (index == nrThreads - 1)
+                end = width;
+
+            Console.WriteLine("Start thread " + index);
+
+            for (int i = start; i < end; i++)
+                for (int j = 0; j < height; j++)
+                {
+                    Color col = getColor(buffer, i, j, width, height, depth);
+
+                    float r = 0, g = 0, b = 0;
+                    float nrCols = 0;
+                    int radius = (width + height) / 300;
+                    if (radius <= 0)
+                        radius = 1;
+                    if (radius > 5)
+                        radius = 5;
+                    for (int ii = -radius; ii <= radius; ii++)
+                        for (int jj = -radius; jj <= radius; jj++)
+                        {
+                            if (ii == 0 && jj == 0)
+                                continue;
+                            int x = i + ii;
+                            int y = j + jj;
+                            if (x < 0)
+                                x = 0;
+                            if (y < 0)
+                                y = 0;
+                            if (x >= width)
+                                x = width - 1;
+                            if (y >= height)
+                                y = height - 1;
+
+                            Color blurCol = getColor(buffer, x, y, width, height, depth);
+                            r += blurCol.R;
+                            g += blurCol.G;
+                            b += blurCol.B;
+                            nrCols++;
+                        }
+                    r /= nrCols;
+                    g /= nrCols;
+                    b /= nrCols;
+
+                    float r_, g_, b_;
+                    r_ = (col.R + r * 2) / 3f;
+                    g_ = (col.G + g * 2) / 3f;
+                    b_ = (col.B + b * 2) / 3f;
+
+                    r -= col.R;
+                    g -= col.G;
+                    b -= col.B;
+
+                    r /= 255f;
+                    g /= 255f;
+                    b /= 255f;
+
+                    float dist = (r * r + g * g + b * b) * 27;
+                    //float dist = (Math.Abs(r) + Math.Abs(g) + Math.Abs(b)) * 3;
+                    r = r_ - dist * 255;
+                    g = g_ - dist * 255;
+                    b = b_ - dist * 255;
+                    if (r < 0)
+                        r = 0;
+                    if (g < 0)
+                        g = 0;
+                    if (b < 0)
+                        b = 0;
+
+                    setColor(output, i, j, width, height, depth, Color.FromArgb((int)r, (int)g, (int)b));
+                    //if (r * r + g * g + b * b > 30 * 30)
+                    //{
+                    //    setColor(output, i, j, width, height, depth, Color.Black);
+                    //}
+                    //else
+                    //    setColor(output, i, j, width, height, depth, col);
                 }
         }
 
@@ -323,7 +405,7 @@ namespace Pixelations
 
             Console.WriteLine(smal.Width + " " + smal.Height);
 
-            if(!checkBox1.Checked)
+            if(!checkBox1.Checked || checkBox2.Checked)
             {
                 var rect = new Rectangle(0, 0, smal.Width, smal.Height);
                 var data = smal.LockBits(rect, ImageLockMode.ReadWrite, smal.PixelFormat);
@@ -333,21 +415,44 @@ namespace Pixelations
                 //copy pixels to buffer
                 Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
 
+
                 Thread[] threads = new Thread[10];
                 int minWidt, minHeigh, maxWidth, maxHeight;
                 minWidt = smal.Width;
                 minHeigh = smal.Height;
                 maxWidth = selectedImage.Width;
                 maxHeight = selectedImage.Height;
-                for (int i = 0; i < threads.Length; i++)
+
+                if (!checkBox1.Checked)
                 {
-                    int index = i;
-                    threads[i] = new Thread(() => threadPutPyxelated(index, threads.Length, buffer, minWidt, minHeigh, depth, colorNr.ToArray(), maxWidth, maxHeight));
-                    threads[i].Start();
+                    bool notPixelated = checkBox3.Checked;
+                    for (int i = 0; i < threads.Length; i++)
+                    {
+                        int index = i;
+                        threads[i] = new Thread(() => threadPutPyxelated(index, threads.Length, buffer, minWidt, minHeigh, depth, colorNr.ToArray(), maxWidth, maxHeight, notPixelated));
+                        threads[i].Start();
+                    }
+                    for (int i = 0; i < threads.Length; i++)
+                        threads[i].Join();
+                    Console.WriteLine("Created pixels");
                 }
-                for (int i = 0; i < threads.Length; i++)
-                    threads[i].Join();
-                Console.WriteLine("Created pixels");
+
+                if(checkBox2.Checked)
+                {
+                    var outputBuffer = new byte[buffer.Length];
+                    buffer.CopyTo(outputBuffer, 0);
+
+                    for (int i = 0; i < threads.Length; i++)
+                    {
+                        int index = i;
+                        threads[i] = new Thread(() => threadMakeCountour(index, threads.Length, buffer, minWidt, minHeigh, depth, outputBuffer));
+                        threads[i].Start();
+                    }
+                    for (int i = 0; i < threads.Length; i++)
+                        threads[i].Join();
+                    Console.WriteLine("Created contour");
+                    buffer = outputBuffer;
+                }
 
                 //Copy the buffer back to image
                 Marshal.Copy(buffer, 0, data.Scan0, buffer.Length);
@@ -356,15 +461,24 @@ namespace Pixelations
 
             smallVersion = smal;
             Bitmap bmp2;
-            g_ = Graphics.FromImage(bmp2 = new Bitmap(smal.Width * 10, smal.Height * 10));
+
+            int biggerWidth = smal.Width * 10;
+            int biggerHeight = smal.Height * 10;
+            if (biggerHeight > 3000 || biggerWidth > 3000)
+            {
+                biggerWidth = smal.Width;
+                biggerHeight = smal.Height;
+            }
+            g_ = Graphics.FromImage(bmp2 = new Bitmap(biggerWidth, biggerHeight));
             g_.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            g_.DrawImage(smal, 0, 0, smal.Width * 10, smal.Height * 10);
+            g_.DrawImage(smal, 0, 0, biggerWidth, biggerHeight);
             g_.Dispose();
             Console.WriteLine("Resized");
 
             smallBigVersion = bmp2;
             pictureBox2.Image = bmp2;
         }
+
 
         /// <summary>
         /// load an image
@@ -528,25 +642,7 @@ namespace Pixelations
             int nrEpocs = 5 + trackBar1.Value / 5;
             for (int k = 0; k < nrEpocs; k++)
             {
-                //for (int i = 0; i < selectedImage.Width; i++)
-                //    for (int j = 0; j < selectedImage.Height; j++)
-                //    {
-                //        var col = getColor(colors, i, j, selectedImage.Width, selectedImage.Height, this.depth);
-                //        int dis = distance(col, colorNr[0].color);
-                //        int indx = 0;
-                //
-                //        for(int l=1;l<colorNr.Count;l++)
-                //        {
-                //            int newD = distance(col, colorNr[l].color);
-                //            if(newD < dis)
-                //            {
-                //                dis = newD;
-                //                indx = l;
-                //            }
-                //        }
-                //
-                //        colorNr[indx].addColor(col);
-                //    }
+                Console.WriteLine("Creating palette :  " + (k + 1) + "/" + nrEpocs);
                 for (int i = 0; i < threads.Length; i++)
                 {
                     int j = i;

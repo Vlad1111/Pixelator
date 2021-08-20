@@ -27,11 +27,16 @@ namespace Pixelations
 
         public void Lock(int index)
         {
-            Console.WriteLine("Lock " + index);
-            nrLocked++;
-            if (nrLocked == maxVal)
-                Unlock(index);
-            else mutexes[index].Wait();
+            lock(this)
+            {
+                nrLocked++;
+                if (nrLocked == maxVal)
+                { 
+                    Unlock(index);
+                    return;
+                }
+            }
+            mutexes[index].Wait();
         }
 
         private void Unlock(int index)
